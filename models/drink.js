@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 const DrinkSchema = new Schema({
   type: {
     type: String,
-    required: [true, 'Type of drink must be required']
+    required: [true, 'Drink must be required']
   },
   ingredients: [String],
   price: {
@@ -18,4 +18,4 @@ const DrinkSchema = new Schema({
 // create 'drinks' collection based on DrinkSchema
 const Drink = mongoose.model('drink', DrinkSchema);
 
-module.exports = Drinks;
+module.exports = Drink;
