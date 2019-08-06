@@ -7,7 +7,12 @@ router.get('/drinks', (request, response) => {
 });
 
 router.post('/drinks', (request, response) => {
-  response.send( { type: 'POST' } );
+  console.log(request.body);
+  response.send( {
+    type: 'POST',
+    name: request.body.name,
+    water: request.body.water
+  } );
 });
 
 router.put('/drinks/:id', (request, response) => {
