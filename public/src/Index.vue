@@ -21,7 +21,7 @@
       </ul>
       <span class="drink__type">{{drink.type}}</span>
       <button v-on:click="deleteDrink(drink._id, drink.type)" class="drink__button drink__button--del" type="button" name="button">Delete</button>
-      <button v-on:click="updateDrink(drink._id, drink.type)" class="drink__button drink__button--upd" type="button" name="button">Edit</button>
+      <router-link class="drink__button drink__button--upd" :to="{ name: 'EditDrink', params: {id: drink._id} }">Edit</router-link>
     </div>
   </div>
   <div class="addNew">

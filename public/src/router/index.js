@@ -12,7 +12,7 @@ export default new Router({
       component: Index
     },
     {
-      path: '/edit',
+      path: '/edit/:id',
       name: 'EditDrink',
       component: Edit
     }
