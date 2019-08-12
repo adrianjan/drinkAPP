@@ -141,7 +141,7 @@ export default {
     }
 
     &__type {
-        text-transform: uppercase;
+         text-transform: uppercase;
         letter-spacing: 0.06em;
         position: relative;
         align-self: center;

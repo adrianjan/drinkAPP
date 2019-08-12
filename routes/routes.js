@@ -10,6 +10,23 @@ router.get('/drinks', (request, response, next) => {
   });
 });
 
+//get just one drink
+router.get('/drinks/:id', (request, response, next) => {
+  Drink.findOne({
+      _id: request.params.id
+    })
+    .then((drink) => {
+      if (drink) {
+        response.send(drink)
+      } else {
+        response.send("no data exist for this id");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 // create record
 router.post('/drinks', (request, response, next) => {
   Drink.create(request.body).then((drink) => {
