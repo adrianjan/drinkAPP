@@ -71,9 +71,6 @@ export default {
         })
         .then(response => console.log(response.json()))
     },
-    updateDrink(id, name) {
-      console.log(`Updating drink ${name}, ${id}`)
-    },
     addNewDrink() {
       console.log('Adding new drink')
     }
