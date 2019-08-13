@@ -65,7 +65,8 @@ export default {
       newDrink: {},
       ing: null,
       ingredients: [],
-      info: null
+      info: null,
+      form: document.querySelector('.addNew__form')
     }
   },
   methods: {
@@ -94,16 +95,23 @@ export default {
         price: document.querySelector('.addNew__form').price.value,
         ingredients: this.ingredients
       }
-      console.log(JSON.stringify(this.newDrink));
-      fetch('http://localhost:1000/api/drinks/', {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(this.newDrink)
-      }).then((response) => response.json()).then((data) => {
-        console.log('Created Drink:', data);
-      }).catch(err => console.log(err));
+      if (!this.newDrink.price) {
+        this.info = 'Prce is empty'
+      } else if(!this.newDrink.ingredients[0]){
+        this.info = 'At least one ingredient'
+      } else {
+        console.log('All good');
+        fetch('http://localhost:1000/api/drinks/', {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(this.newDrink)
+        }).then((response) => response.json()).then((data) => {
+          console.log('Created Drink:', data);
+        }).catch(err => console.log(err));
+      }
+
     }
   },
   created() {
