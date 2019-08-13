@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 const DrinkSchema = new Schema({
   type: {
     type: String,
-    required: [true, 'Drink must be required']
+    required: [true, 'Drink type is required']
   },
   ingredients: [String],
   price: {

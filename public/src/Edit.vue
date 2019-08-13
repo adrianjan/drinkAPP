@@ -1,16 +1,17 @@
 <template>
 <div class="edit">
   <h3>Edit your drink</h3>
-  <div class="edit__drink">
+  <form class="edit__drink">
     <input type="number" name="price" :value="drink.price">
     <div class="ingredient" v-for="ing in drink.ingredients">
       <input type="text" name="ingredient" :value="ing">
     </div>
-    <select>
-      <option selected :value="drink.type">{{drink.type}}</option>
+    <select name="select">
+      <!-- <option :value="drink.type">{{drink.type}}</option> -->
       <option v-for="other in others" :value="other">{{other}}</option>
     </select>
-  </div>
+    <button type="submit" name="Update" @click.prevent="updateDrink(drink._id)">Update</button>
+  </form>
 </div>
 </template>
 
@@ -21,12 +22,22 @@ export default {
     return {
       drink: {},
       types: ['milk shake', 'shake', 'coffee'],
-      others: []
+      others: [],
+      form: document.querySelector('.edit__drink')
     }
   },
   methods: {
     updateDrink(id) {
       console.log(`Updating drink ${id}`)
+      // get all data from inputs
+      // console.log(this.form.select.options[this.form.select.options.selectedIndex].textContent)
+      // this.drink.price = this.form.price.value
+      console.log(this.form.select.options)
+      // this.drink.ingredients = [...['New', 'New2']]
+      // console.log(this.drink)
+      // create a template
+      // change to json and send
+      // redirect do index
     }
   },
   created() {

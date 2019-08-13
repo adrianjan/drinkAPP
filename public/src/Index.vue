@@ -41,8 +41,12 @@
         <input class="form__input" type="radio" name="type" id="milkShake" value="Milk shake">
         <label for="milkShake">Milk shake</label>
       </div>
-      <input class="form__input" type="text" name="ingredient" placeholder="Ingredient">
-      <button v-on:click="addNewDrink" class="form__button" type="button" name="button">Create</button>
+      <div v-for="(ing, i) in ingredients" :key="i">
+        <input type="text" class="form__input" v-model="ingredients[i]" name="ingredient" placeholder="Ingredient">
+      </div>
+      <input @keydown.tab.prevent="addIng" v-model="ing" class="form__input" type="text" name="ingredient" placeholder="Ingredient">
+      <p v-if="info">{{info}}</p>
+      <button @click.prevent="addNewDrink" class="form__button" type="submit" name="button">Create</button>
     </form>
   </div>
 </div>
@@ -57,7 +61,11 @@ export default {
       msg: 'Make your awesome drink :)',
       drinksInfo: 'Your current drinks:',
       url: 'http://localhost:1000/api/drinks/',
-      drinks: []
+      drinks: [],
+      newDrink: {},
+      ing: null,
+      ingredients: [],
+      info: null
     }
   },
   methods: {
@@ -71,8 +79,31 @@ export default {
         })
         .then(response => console.log(response.json()))
     },
+    addIng() {
+      if (this.ing) {
+        this.ingredients.push(this.ing)
+        this.ing = null
+        this.info = null
+      } else {
+        this.info = 'Enter a value...'
+      }
+    },
     addNewDrink() {
-      console.log('Adding new drink')
+      this.newDrink = {
+        type: Array.from(document.getElementsByName("type")).find(r => r.checked).value,
+        price: document.querySelector('.addNew__form').price.value,
+        ingredients: this.ingredients
+      }
+      console.log(JSON.stringify(this.newDrink));
+      fetch('http://localhost:1000/api/drinks/', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(this.newDrink)
+      }).then((response) => response.json()).then((data) => {
+        console.log('Created Drink:', data);
+      }).catch(err => console.log(err));
     }
   },
   created() {
@@ -138,7 +169,7 @@ export default {
     }
 
     &__type {
-         text-transform: uppercase;
+        text-transform: uppercase;
         letter-spacing: 0.06em;
         position: relative;
         align-self: center;
