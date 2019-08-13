@@ -2,15 +2,18 @@
 <div class="edit">
   <h3>Edit your drink</h3>
   <form class="edit__drink">
-    <input type="number" name="price" :value="drink.price">
-    <div class="ingredient" v-for="ing in drink.ingredients">
-      <input type="text" name="ingredient" :value="ing">
+    <input type="number" name="price" v-model="drink.price">
+    <div class="ingredient">
+      <input type="text" name="ingredient" v-model="drink.ingredients">
+      <p v-if="info">{{info}}</p>
     </div>
     <select name="select">
-      <!-- <option :value="drink.type">{{drink.type}}</option> -->
+      <option :value="drink.type">{{drink.type}}</option>
       <option v-for="other in others" :value="other">{{other}}</option>
     </select>
     <button type="submit" name="Update" @click.prevent="updateDrink(drink._id)">Update</button>
+    <p v-if="feedback">{{feedback}}</p>
+    <router-link :to="{ name: 'Index'}">Back to index</router-link>
   </form>
 </div>
 </template>
@@ -21,21 +24,30 @@ export default {
   data() {
     return {
       drink: {},
-      types: ['milk shake', 'shake', 'coffee'],
+      types: ['Milk shake', 'Shake', 'Coffee'],
       others: [],
-      form: document.querySelector('.edit__drink')
+      info: null,
+      feedback: null
     }
   },
   methods: {
     updateDrink(id) {
-      console.log(`Updating drink ${id}`)
-      // get all data from inputs
-      // console.log(this.form.select.options[this.form.select.options.selectedIndex].textContent)
-      // this.drink.price = this.form.price.value
-      console.log(this.form.select.options)
-      // this.drink.ingredients = [...['New', 'New2']]
-      // console.log(this.drink)
-      // create a template
+      // update price in drink
+      this.drink.type = document.querySelector('.edit__drink').select.options[document.querySelector('.edit__drink').select.options.selectedIndex].value
+      if (!this.drink.ingredients) {
+        this.info = 'Input must contain at least one ingredient'
+      } else {
+        this.info = null
+        fetch(`http://localhost:1000/api/drinks/${id}`, {
+          method: 'put',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(this.drink)
+        }).then((response) => response.json()).then((data) => {
+          this.feedback = `Updated your drink`
+        }).catch(err => this.feedback = error);
+      }
       // change to json and send
       // redirect do index
     }
@@ -45,7 +57,7 @@ export default {
       .then(response => response.json())
       .then(drink => this.drink = drink).then(drink => {
         this.types.forEach(type => {
-          if (type != drink.type) {
+          if (type.toLowerCase() !== drink.type.toLowerCase()) {
             this.others.push(type)
           }
         })
