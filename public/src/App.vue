@@ -18,7 +18,13 @@ export default {
     box-sizing: border-box;
 }
 
+.index{
+  width: 100%;
+}
+
 .ul {
+    width: 100%;
     list-style: none;
+    padding: 0;
 }
 </style>

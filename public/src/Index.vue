@@ -1,7 +1,7 @@
 <template>
 <div class="index">
-  <div class="info">
-    <h1>Make your awesome drink :)</h1>
+  <section class="info">
+    <h1 class="h1">Make your awesome drink :)</h1>
     <h3>You can do cool stuff like:</h3>
     <ul class="ul">
       <li class="list__item">Creating your drink</li>
@@ -9,9 +9,9 @@
       <li class="list__item">Updating your refreshment</li>
       <li class="list__item">Deleting</li>
     </ul>
-  </div>
+  </section>
   <div class="drinks">
-    <h1>Your current drinks:</h1>
+    <h1 class="h1">Your current drinks:</h1>
     <div v-for="drink in drinks" class="drink">
       <span class="drink__price">{{drink.price}}$</span>
       <ul class="ul">
@@ -25,7 +25,7 @@
     </div>
   </div>
   <div class="addNew">
-    <h1>New awesome drink...</h1>
+    <h1 class="h1">New awesome drink...</h1>
     <form class="addNew__form">
       <h4>Choose a name/type of your drink ;]</h4>
       <input class="form__input" type="number" name="price" placeholder="20">
@@ -93,7 +93,7 @@ export default {
       }
       if (!this.newDrink.price) {
         this.info = 'Prce is empty'
-      } else if(!this.newDrink.ingredients[0]){
+      } else if (!this.newDrink.ingredients[0]) {
         this.info = 'At least one ingredient'
       } else {
         console.log('All good');
@@ -123,12 +123,52 @@ export default {
 </script>
 
 <style lang="scss">
+$metal: #292F36;
+$mint: #F7FFF7;
+$turq: #4ECDC4;
+$red: #FF6B6B;
+
 #app {
+    background: $metal;
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    color: $mint;
+    display: flex;
+    justify-content: center;
+    align-items: space-around;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.h1 {
+    font-size: 26px;
+}
+
+.info {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    color: $metal;
+    &::before {
+        z-index: -1;
+        content: '';
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: $mint;
+        border-radius: 0 0 50% 50%/ 0 0 100% 100%;
+        transform: scaleX(2.2);
+    }
+}
+
+.list__item {
     text-align: center;
-    color: #2c3e50;
 }
 
 .drinks {
@@ -149,6 +189,7 @@ export default {
     grid-template-rows: 1fr;
     grid-template-columns: 1fr 1fr;
     border-radius: 10px;
+    color: $metal;
 
     &__ingredient {
         background: tomato;
@@ -192,6 +233,17 @@ export default {
         &--upd {
             bottom: 37px;
             right: 10px;
+        }
+    }
+}
+
+@media screen and(min-width: 768px) {
+    .h1 {
+        font-size: 32px;
+    }
+    .info {
+        &::before {
+            transform: scaleX(1.2);
         }
     }
 }
