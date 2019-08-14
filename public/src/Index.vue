@@ -10,9 +10,9 @@
       <li class="list__item">Deleting</li>
     </ul>
   </section>
-  <div class="drinks">
+  <section class="drinks">
     <h1 class="h1">Your current drinks:</h1>
-    <div v-for="drink in drinks" class="drink">
+    <article v-for="drink in drinks" class="drink">
       <span class="drink__price">{{drink.price}}$</span>
       <ul class="ul">
         <li v-for="ing in drink.ingredients" class="drink__ingredient">
@@ -22,8 +22,8 @@
       <span class="drink__type">{{drink.type}}</span>
       <button v-on:click="deleteDrink(drink._id)" class="drink__button drink__button--del" type="button" name="button">Delete</button>
       <router-link class="drink__button drink__button--upd" :to="{ name: 'EditDrink', params: {id: drink._id} }">Edit</router-link>
-    </div>
-  </div>
+    </article>
+  </section>
   <div class="addNew">
     <h1 class="h1">New awesome drink...</h1>
     <form class="addNew__form">
@@ -49,7 +49,6 @@
       <button @click.prevent="addNewDrink" class="form__button" type="submit" name="button">Create</button>
     </form>
   </div>
-</div>
 </div>
 </template>
 
@@ -177,33 +176,40 @@ $red: #FF6B6B;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
     justify-items: center;
-    grid-gap: 12px;
+    grid-row-gap: 20px;
+
+    .h1 {
+        margin-top: 40px;
+    }
 }
 
 .drink {
     position: relative;
     width: 80%;
-    background: #ccc;
-    padding: 20px 0;
-    display: grid;
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr 1fr;
-    border-radius: 10px;
+    background: $mint;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 25px 5px 5px 25px;
     color: $metal;
 
     &__ingredient {
-        background: tomato;
+        background: $metal;
         display: inline-block;
-        width: 40%;
+        width: 30%;
+        text-align: center;
         padding: 10px 0;
         border-radius: 20px;
         margin: 10px;
+        color: $mint;
+        text-transform: capitalize;
     }
 
     &__price {
-        font-size: 18px;
+        font-size: 23px;
         font-weight: bold;
         align-self: center;
+        color: $red;
     }
 
     &__type {
@@ -211,39 +217,82 @@ $red: #FF6B6B;
         letter-spacing: 0.06em;
         position: relative;
         align-self: center;
+        z-index: 1;
         &::before {
             position: absolute;
             content: '';
-            bottom: -5px;
+            bottom: -3px;
             left: 50%;
-            width: 70px;
-            height: 3px;
-            background: tomato;
+            width: 100%;
+            height: 4px;
+            z-index: -1;
+            background: $turq;
             transform: translateX(-50%);
         }
     }
 
     &__button {
         position: absolute;
+        display: block;
+        box-shadow: none;
+        border: 2px solid $metal;
+        color: $metal;
+        cursor: pointer;
+        transition: color 0.3s, border 0.2s ease-in, transform 0.3s ease-in-out;
+        &:hover {
+            color: $mint;
+            transform: scale(1.1);
+        }
         &--del {
             bottom: 5px;
             right: 10px;
+            padding: 5px 20px;
+            background: $red;
+            &:hover {
+                border-color: $red;
+            }
         }
 
         &--upd {
-            bottom: 37px;
+            bottom: 48px;
             right: 10px;
+            padding: 5px 29px;
+            text-decoration: none;
+            background: $turq;
+            &:hover {
+                border-color: $turq;
+            }
         }
     }
 }
 
-@media screen and(min-width: 768px) {
+@media screen and (min-width: 768px) {
     .h1 {
         font-size: 32px;
     }
     .info {
         &::before {
             transform: scaleX(1.2);
+        }
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .drinks {
+        grid-template-columns: 1fr 1fr;
+        grid-row-gap: 30px;
+        .h1 {
+            grid-row: 1/2;
+            grid-column: 1/3;
+        }
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    .drinks {
+        grid-template-columns: 1fr 1fr 1fr;
+        .h1 {
+            grid-column: 1/6;
         }
     }
 }
