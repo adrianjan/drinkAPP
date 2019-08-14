@@ -8,11 +8,17 @@
 export default {
   name: 'app',
   data() {
-    return {
-    }
+    return {}
   }
 }
 </script>
 
 <style lang="scss">
+* {
+    box-sizing: border-box;
+}
+
+.ul {
+    list-style: none;
+}
 </style>

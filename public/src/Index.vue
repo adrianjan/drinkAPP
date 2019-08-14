@@ -1,7 +1,7 @@
 <template>
 <div class="index">
   <div class="info">
-    <h1>{{ msg }}</h1>
+    <h1>Make your awesome drink :)</h1>
     <h3>You can do cool stuff like:</h3>
     <ul class="ul">
       <li class="list__item">Creating your drink</li>
@@ -11,7 +11,7 @@
     </ul>
   </div>
   <div class="drinks">
-    <h1>{{drinksInfo}}</h1>
+    <h1>Your current drinks:</h1>
     <div v-for="drink in drinks" class="drink">
       <span class="drink__price">{{drink.price}}$</span>
       <ul class="ul">
@@ -20,7 +20,7 @@
         </li>
       </ul>
       <span class="drink__type">{{drink.type}}</span>
-      <button v-on:click="deleteDrink(drink._id, drink.type)" class="drink__button drink__button--del" type="button" name="button">Delete</button>
+      <button v-on:click="deleteDrink(drink._id)" class="drink__button drink__button--del" type="button" name="button">Delete</button>
       <router-link class="drink__button drink__button--upd" :to="{ name: 'EditDrink', params: {id: drink._id} }">Edit</router-link>
     </div>
   </div>
@@ -58,20 +58,16 @@ export default {
   name: 'app',
   data() {
     return {
-      msg: 'Make your awesome drink :)',
-      drinksInfo: 'Your current drinks:',
       url: 'http://localhost:1000/api/drinks/',
       drinks: [],
       newDrink: {},
       ing: null,
       ingredients: [],
-      info: null,
-      form: document.querySelector('.addNew__form')
+      info: null
     }
   },
   methods: {
-    deleteDrink(id, name) {
-      console.log(`Deleting drink ${name}, ${id}`)
+    deleteDrink(id) {
       // delete from DOM
       this.drinks = this.drinks.filter(drink => drink._id !== id);
       // delete from DB
@@ -127,19 +123,12 @@ export default {
 </script>
 
 <style lang="scss">
-* {
-    box-sizing: border-box;
-}
 #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-}
-
-.ul {
-    list-style: none;
 }
 
 .drinks {

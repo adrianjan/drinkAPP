@@ -48,8 +48,6 @@ export default {
           this.feedback = `Updated your drink`
         }).catch(err => this.feedback = error);
       }
-      // change to json and send
-      // redirect do index
     }
   },
   created() {
