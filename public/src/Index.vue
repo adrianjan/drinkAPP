@@ -24,31 +24,33 @@
       <router-link class="drink__button drink__button--upd" :to="{ name: 'EditDrink', params: {id: drink._id} }">Edit</router-link>
     </article>
   </section>
-  <div class="addNew">
+  <section class="addNew">
     <h1 class="h1">New awesome drink...</h1>
     <form class="addNew__form">
-      <h4>Choose a name/type of your drink ;]</h4>
-      <input class="form__input" type="number" name="price" placeholder="20">
+      <p>Price:</p>
+      <input class="input" type="number" name="price" placeholder="20">
+      <p>Type:</p>
       <div>
-        <input class="form__input" type="radio" name="type" id="coffe" value="Coffee" checked>
-        <label for="coffe">Coffee</label>
+        <input class="input input--radio" type="radio" name="type" id="coffe" value="Coffee" checked>
+        <label class="label" for="coffe">Coffee</label>
       </div>
       <div>
-        <input class="form__input" type="radio" name="type" id="shake" value="Shake">
-        <label for="shake">Shake</label>
+        <input class="input input--radio" type="radio" name="type" id="shake" value="Shake">
+        <label class="label" for="shake">Shake</label>
       </div>
       <div>
-        <input class="form__input" type="radio" name="type" id="milkShake" value="Milk shake">
-        <label for="milkShake">Milk shake</label>
+        <input class="input input--radio" type="radio" name="type" id="milkShake" value="Milk shake">
+        <label class="label" for="milkShake">Milk shake</label>
       </div>
+      <p>Ingredients: <span class="small">(tab for new)</span></p>
       <div v-for="(ing, i) in ingredients" :key="i">
-        <input type="text" class="form__input" v-model="ingredients[i]" name="ingredient" placeholder="Ingredient">
+        <input type="text" class="input" v-model="ingredients[i]" name="ingredient" placeholder="Ingredient">
       </div>
-      <input @keydown.tab.prevent="addIng" v-model="ing" class="form__input" type="text" name="ingredient" placeholder="Ingredient">
-      <p v-if="info">{{info}}</p>
-      <button @click.prevent="addNewDrink" class="form__button" type="submit" name="button">Create</button>
+      <input @keydown.tab.prevent="addIng" v-model="ing" class="input" type="text" name="ingredient" placeholder="Ingredient">
+      <p v-if="info" class="alert">{{info}}</p>
+      <button @click.prevent="addNewDrink" class="button" type="submit" name="button">Create</button>
     </form>
-  </div>
+  </section>
 </div>
 </template>
 
@@ -91,7 +93,7 @@ export default {
         ingredients: this.ingredients
       }
       if (!this.newDrink.price) {
-        this.info = 'Prce is empty'
+        this.info = 'Price is empty'
       } else if (!this.newDrink.ingredients[0]) {
         this.info = 'At least one ingredient'
       } else {
@@ -142,6 +144,12 @@ $red: #FF6B6B;
 
 .h1 {
     font-size: 26px;
+}
+
+.alert{
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .info {
@@ -266,6 +274,131 @@ $red: #FF6B6B;
     }
 }
 
+.addNew {
+    width: 100%;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 70%;
+        height: 100%;
+        z-index: -1;
+        background: $red;
+        clip-path: ellipse(27% 51% at 68% 53%);
+        transform: scale(3);
+    }
+
+    &__form {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.input {
+    width: 60%;
+    max-width: 400px;
+    border: 2px solid $turq;
+    padding: 5px;
+    background: transparent;
+    color: $mint;
+    transition: border 0.3s ease-in;
+    margin: 4px auto;
+    &::placeholder {
+        color: $mint;
+    }
+
+    &:focus {
+        border-color: $mint;
+    }
+
+    &--radio {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        display: inline-block;
+        position: relative;
+        background: $mint;
+        font-weight: bold;
+        top: 10px;
+        height: 25px;
+        width: 25px;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        margin-right: 3px;
+        outline: none;
+        &:hover {
+            background: $red;
+        }
+        &:checked::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 60%;
+            height: 60%;
+            background: $turq;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+}
+
+.label {
+    cursor: pointer;
+}
+
+.button {
+    display: block;
+    margin: 20px auto;
+    box-shadow: none;
+    border: none;
+    padding: 10px 23px;
+    font-size: 18px;
+    cursor: pointer;
+    position: relative;
+    color: $metal;
+    font-weight: bold;
+    background: $mint;
+    z-index: 1;
+    overflow: hidden;
+    &::before {
+        position: absolute;
+        content: '';
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: $turq;
+        top: 0;
+        right: 0;
+        z-index: -1;
+        transform: translate(50%, 50%);
+        transition: transform 0.1s cubic-bezier(.17,.67,1,.48);
+    }
+    &:hover {
+        &::before {
+            transform: scale(10, 3);
+        }
+        color: $mint;
+    }
+}
+
+.small {
+    font-size: 14px;
+    font-weight: bold;
+}
+
 @media screen and (min-width: 768px) {
     .h1 {
         font-size: 32px;
@@ -273,6 +406,14 @@ $red: #FF6B6B;
     .info {
         &::before {
             transform: scaleX(1.2);
+        }
+    }
+
+    .addNew {
+        &::after {
+            background: $mint;
+            transform: scaleX(3);
+            width: 50%;
         }
     }
 }
@@ -284,6 +425,18 @@ $red: #FF6B6B;
         .h1 {
             grid-row: 1/2;
             grid-column: 1/3;
+        }
+    }
+    .button {
+        font-size: 23px;
+        padding: 15px 40px;
+        &::before {
+            transform: translate(50%, 80%);
+        }
+        &:hover {
+            &::before {
+                transform: scale(18, 5);
+            }
         }
     }
 }
