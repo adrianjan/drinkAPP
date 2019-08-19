@@ -28,7 +28,7 @@
     <h1 class="h1">New awesome drink...</h1>
     <form class="addNew__form">
       <p>Price:</p>
-      <input class="input" type="number" name="price" placeholder="20">
+      <input class="input" type="number" name="price" placeholder="Price">
       <p>Type:</p>
       <div>
         <input class="input input--radio" type="radio" name="type" id="coffe" value="Coffee" checked>
@@ -43,12 +43,11 @@
         <label class="label" for="milkShake">Milk shake</label>
       </div>
       <p>Ingredients: <span class="small">(tab for new)</span></p>
-      <div v-for="(ing, i) in ingredients" :key="i">
-        <input type="text" class="input" v-model="ingredients[i]" name="ingredient" placeholder="Ingredient">
-      </div>
+      <input v-for="(ing, i) in ingredients" :key="i" type="text" class="input ingredient" v-model="ingredients[i]" name="ingredient" placeholder="Ingredient">
       <input @keydown.tab.prevent="addIng" v-model="ing" class="input" type="text" name="ingredient" placeholder="Ingredient">
       <p v-if="info" class="alert">{{info}}</p>
       <button @click.prevent="addNewDrink" class="button" type="submit" name="button">Create</button>
+      <p v-if="drink">{{drink}}</p>
     </form>
   </section>
 </div>
@@ -64,7 +63,8 @@ export default {
       newDrink: {},
       ing: null,
       ingredients: [],
-      info: null
+      info: null,
+      drink: null
     }
   },
   methods: {
@@ -73,9 +73,8 @@ export default {
       this.drinks = this.drinks.filter(drink => drink._id !== id);
       // delete from DB
       return fetch(`${this.url}${id}`, {
-          method: 'delete'
-        })
-        .then(response => console.log(response.json()))
+        method: 'delete'
+      })
     },
     addIng() {
       if (this.ing) {
@@ -97,7 +96,6 @@ export default {
       } else if (!this.newDrink.ingredients[0]) {
         this.info = 'At least one ingredient'
       } else {
-        console.log('All good');
         fetch('http://localhost:1000/api/drinks/', {
           method: 'post',
           headers: {
@@ -105,10 +103,11 @@ export default {
           },
           body: JSON.stringify(this.newDrink)
         }).then((response) => response.json()).then((data) => {
-          console.log('Created Drink:', data);
-        }).catch(err => console.log(err));
+          this.drink = 'Created your awesome drink :)'
+          document.querySelector('.addNew__form').reset()
+          // document.querySelectorAll('.ingredient')
+        }).catch(err => this.info = err)
       }
-
     }
   },
   created() {
@@ -116,7 +115,7 @@ export default {
       .then(response => response.json())
       .then(drinks => {
         drinks.forEach(drink => {
-          this.drinks.push(drink);
+          this.drinks.push(drink)
         })
       })
   }
@@ -128,29 +127,6 @@ $metal: #292F36;
 $mint: #F7FFF7;
 $turq: #4ECDC4;
 $red: #FF6B6B;
-
-#app {
-    background: $metal;
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: $mint;
-    display: flex;
-    justify-content: center;
-    align-items: space-around;
-    width: 100%;
-    min-height: 100vh;
-}
-
-.h1 {
-    font-size: 26px;
-}
-
-.alert{
-  font-size: 18px;
-  font-weight: bold;
-  text-transform: uppercase;
-}
 
 .info {
     display: flex;
@@ -247,6 +223,7 @@ $red: #FF6B6B;
         color: $metal;
         cursor: pointer;
         transition: color 0.3s, border 0.2s ease-in, transform 0.3s ease-in-out;
+        &:focus,
         &:hover {
             color: $mint;
             transform: scale(1.1);
@@ -303,100 +280,6 @@ $red: #FF6B6B;
         flex-direction: column;
         align-items: center;
     }
-}
-
-.input {
-    width: 60%;
-    max-width: 400px;
-    border: 2px solid $turq;
-    padding: 5px;
-    background: transparent;
-    color: $mint;
-    transition: border 0.3s ease-in;
-    margin: 4px auto;
-    &::placeholder {
-        color: $mint;
-    }
-
-    &:focus {
-        border-color: $mint;
-    }
-
-    &--radio {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        display: inline-block;
-        position: relative;
-        background: $mint;
-        font-weight: bold;
-        top: 10px;
-        height: 25px;
-        width: 25px;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        margin-right: 3px;
-        outline: none;
-        &:hover {
-            background: $red;
-        }
-        &:checked::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            width: 60%;
-            height: 60%;
-            background: $turq;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-        }
-    }
-}
-
-.label {
-    cursor: pointer;
-}
-
-.button {
-    display: block;
-    margin: 20px auto;
-    box-shadow: none;
-    border: none;
-    padding: 10px 23px;
-    font-size: 18px;
-    cursor: pointer;
-    position: relative;
-    color: $metal;
-    font-weight: bold;
-    background: $mint;
-    z-index: 1;
-    overflow: hidden;
-    &::before {
-        position: absolute;
-        content: '';
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: $turq;
-        top: 0;
-        right: 0;
-        z-index: -1;
-        transform: translate(50%, 50%);
-        transition: transform 0.1s cubic-bezier(.17,.67,1,.48);
-    }
-    &:hover {
-        &::before {
-            transform: scale(10, 3);
-        }
-        color: $mint;
-    }
-}
-
-.small {
-    font-size: 14px;
-    font-weight: bold;
 }
 
 @media screen and (min-width: 768px) {

@@ -2,18 +2,16 @@
 <div class="edit">
   <h3>Edit your drink</h3>
   <form class="edit__drink">
-    <input type="number" name="price" v-model="drink.price">
-    <div class="ingredient">
-      <input type="text" name="ingredient" v-model="drink.ingredients">
-      <p v-if="info">{{info}}</p>
-    </div>
-    <select name="select">
+    <input class="input" type="number" name="price" v-model="drink.price">
+    <input class="input" type="text" name="ingredient" v-model="drink.ingredients">
+    <p v-if="info">{{info}}</p>
+    <select name="select" class="select">
       <option :value="drink.type">{{drink.type}}</option>
       <option v-for="other in others" :value="other">{{other}}</option>
     </select>
-    <button type="submit" name="Update" @click.prevent="updateDrink(drink._id)">Update</button>
+    <button class="button" type="submit" name="Update" @click.prevent="updateDrink(drink._id)">Update</button>
     <p v-if="feedback">{{feedback}}</p>
-    <router-link :to="{ name: 'Index'}">Back to index</router-link>
+    <router-link :to="{ name: 'Index'}" class="link">Back to index</router-link>
   </form>
 </div>
 </template>
@@ -65,5 +63,17 @@ export default {
 </script>
 
 <style lang="scss">
-
+.edit {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    &__drink {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
 </style>
