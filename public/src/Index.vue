@@ -326,9 +326,9 @@ $red: #FF6B6B;
 
 @media screen and (min-width: 1400px) {
     .drinks {
-        grid-template-columns: 1fr 1fr 1fr;
-        .h1 {
-            grid-column: 1/6;
+        grid-template-columns: repeat(3, 1fr);
+        .h1{
+          grid-column: 1/4;
         }
     }
 }

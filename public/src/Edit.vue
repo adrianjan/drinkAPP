@@ -3,7 +3,7 @@
   <h3>Edit your drink</h3>
   <form class="edit__drink">
     <input class="input" type="number" name="price" v-model="drink.price">
-    <input class="input" type="text" name="ingredient" v-model="drink.ingredients">
+    <input class="input" type="text" name="ingredient" :value="drink.ingredients">
     <p v-if="info">{{info}}</p>
     <select name="select" class="select">
       <option :value="drink.type">{{drink.type}}</option>
@@ -25,17 +25,21 @@ export default {
       types: ['Milk shake', 'Shake', 'Coffee'],
       others: [],
       info: null,
-      feedback: null
+      feedback: null,
+      form: document.querySelector('.edit__drink')
     }
   },
   methods: {
     updateDrink(id) {
       // update price in drink
       this.drink.type = document.querySelector('.edit__drink').select.options[document.querySelector('.edit__drink').select.options.selectedIndex].value
-      if (!this.drink.ingredients) {
+      if (!document.querySelector('.edit__drink').ingredient.value) {
         this.info = 'Input must contain at least one ingredient'
       } else {
         this.info = null
+        let sth = this.form.ingredient.value.split(',')
+        this.drink.ingredients = sth
+        console.log(this.drink)
         fetch(`http://localhost:1000/api/drinks/${id}`, {
           method: 'put',
           headers: {
@@ -44,7 +48,7 @@ export default {
           body: JSON.stringify(this.drink)
         }).then((response) => response.json()).then((data) => {
           this.feedback = `Updated your drink`
-        }).catch(err => this.feedback = error);
+        }).catch(err => this.feedback = error)
       }
     }
   },
